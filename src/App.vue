@@ -1,52 +1,122 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import Greet from "./components/Greet.vue";
+<script lang="ts">
+	import Logo from './Images/LogoGreen.png'
+
+	export default {
+		data() {
+			return {
+				Logo: Logo
+			}
+		}
+	}
 </script>
 
 <template>
-  <div class="container">
-    <h1>Welcome to Tauri!</h1>
+	<main data-tauri-drag-region>
+		<div class="navigation-container">
+		<div class="tray">
+			<img :src="Logo" id="logo"/>
 
-    <div class="row">
-      <a href="https://vitejs.dev" target="_blank">
-        <img src="/vite.svg" class="logo vite" alt="Vite logo" />
-      </a>
-      <a href="https://tauri.app" target="_blank">
-        <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
-      </a>
-      <a href="https://vuejs.org/" target="_blank">
-        <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-      </a>
-    </div>
+			<router-link class="navigation-button active" to="/">
+				<div class="icon">􀊫</div>
+				<div class="text" style="flex-grow: 1;">Search Fonts</div>
+			</router-link>
 
-    <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
+			<router-link class="navigation-button" to="/">
+				<div class="icon">􀅒</div>
+				<div class="text" style="flex-grow: 1;">System Fonts</div>
+			</router-link>
 
-    <p>
-      Recommended IDE setup:
-      <a href="https://code.visualstudio.com/" target="_blank">VS Code</a>
-      +
-      <a href="https://github.com/johnsoncodehk/volar" target="_blank">Volar</a>
-      +
-      <a href="https://github.com/tauri-apps/tauri-vscode" target="_blank"
-        >Tauri</a
-      >
-      +
-      <a href="https://github.com/rust-lang/rust-analyzer" target="_blank"
-        >rust-analyzer</a
-      >
-    </p>
+			<router-link class="navigation-button" to="/">
+				<div class="icon">􀐚</div>
+				<div class="text" style="flex-grow: 1;">Font Boxes</div>
+			</router-link>
 
-    <Greet />
-  </div>
+			<router-link class="navigation-button" to="/">
+				<div class="icon">􀣋</div>
+				<div class="text" style="flex-grow: 1;">Settings</div>
+			</router-link>
+		</div>
+		</div>
+
+		<div class="content-container">
+		<div class="content">
+			<h1>Search Fonts</h1>
+		</div>
+		</div>
+	</main>
 </template>
 
 <style scoped>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
+  main {
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
 
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #249b73);
-}
+  .navigation-container {
+    width: 250px;
+    padding: 16px;
+  }
+
+  .content-container {
+    flex-grow: 1;
+    padding: 16px 16px 16px 0px;
+  }
+
+  .content {
+    width: 100%;
+    height: 100%;
+    padding: 32px;
+
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  #logo {
+    width: 200px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  .active div {
+	background: #1B575D !important;
+    color: white;
+  }
+
+  .icon {
+    margin-right: 8px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+	font-weight: normal;
+  }
+
+  .navigation-button {
+    width: 100%;
+    display: flex;
+    padding: 0px 16px 8px 16px;
+    border-radius: 500px;
+
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 700;
+    color: black;
+  }
+
+  .navigation-button:hover div {
+	background: rgba(27, 87, 93, 0.25);
+    cursor: pointer;
+  }
+
+  .navigation-button div {
+    border-radius: 500px;
+    transition: 0.15s ease all;
+  }
+
+  .navigation-button .text {
+    padding-left: 16px;
+    line-height: 40px;
+  }
 </style>

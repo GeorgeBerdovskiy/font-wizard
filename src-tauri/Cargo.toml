@@ -8,6 +8,9 @@ repository = ""
 edition = "2021"
 rust-version = "1.57"
 
+[dependencies.window-vibrancy]
+git = "https://github.com/tauri-apps/window-vibrancy"
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
@@ -16,7 +19,7 @@ tauri-build = {version = "1.2", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = {version = "1.2", features = ["shell-open"] }
+tauri = {version = "1.2", features = ["macos-private-api", "shell-open"] }
 
 [features]
 # by default Tauri runs in production mode
