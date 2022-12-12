@@ -1,19 +1,10 @@
 <script lang="ts">
-	import { invoke } from "@tauri-apps/api/tauri";
 	import Logo from './Images/LogoGreen.png'
 
 	export default {
 		data() {
 			return {
 				Logo: Logo,
-				boxes: ""
-			}
-		},
-
-		methods: {
-			async collectBoxes() {
-				this.boxes = await invoke("collect_boxes");
-				console.log(this.boxes)
 			}
 		}
 	}
@@ -22,55 +13,35 @@
 <template>
 	<main data-tauri-drag-region>
 		<div class="navigation-container">
-		<div class="tray">
-			<img :src="Logo" id="logo"/>
+			<div class="tray">
+				<img :src="Logo" id="logo"/>
 
-			<router-link class="navigation-button active" to="/">
-				<div class="icon">􀊫</div>
-				<div class="text" style="flex-grow: 1;">Search Fonts</div>
-			</router-link>
+				<router-link class="navigation-button" to="/" active-class="active">
+					<div class="icon">􀊫</div>
+					<div class="text" style="flex-grow: 1;">Search Fonts</div>
+				</router-link>
 
-			<router-link class="navigation-button" to="/">
-				<div class="icon">􀅒</div>
-				<div class="text" style="flex-grow: 1;">System Fonts</div>
-			</router-link>
+				<router-link class="navigation-button" to="/system-fonts" active-class="active">
+					<div class="icon">􀅒</div>
+					<div class="text" style="flex-grow: 1;">System Fonts</div>
+				</router-link>
 
-			<router-link class="navigation-button" to="/">
-				<div class="icon">􀐚</div>
-				<div class="text" style="flex-grow: 1;">Font Boxes</div>
-			</router-link>
+				<router-link class="navigation-button" to="/font-boxes" active-class="active">
+					<div class="icon">􀐚</div>
+					<div class="text" style="flex-grow: 1;">Font Boxes</div>
+				</router-link>
 
-			<router-link class="navigation-button" to="/">
-				<div class="icon">􀣋</div>
-				<div class="text" style="flex-grow: 1;">Settings</div>
-			</router-link>
-		</div>
+				<router-link class="navigation-button" to="/settings" active-class="active">
+					<div class="icon">􀣋</div>
+					<div class="text" style="flex-grow: 1;">Settings</div>
+				</router-link>
+			</div>
 		</div>
 
 		<div class="content-container">
-		<div class="content">
-
-			<div>
-				<h1 class="margin-bottom-half">Search Fonts</h1>
-
-				<div class="input-with-button margin-bottom-half">
-					<input type="text"/>
-					<button id="search-button">􀊫</button>
-				</div>
-
-				<label class="margin-bottom-quarter">Search Source</label>
-				<button class="secondary">
-					Google Fonts 
-
-					<div class="button-icon">
-						􀆈
-					</div>
-				</button>
+			<div class="content">
+				<router-view></router-view>
 			</div>
-
-			<button @click="collectBoxes">Collect Boxes</button>
-
-		</div>
 		</div>
 	</main>
 </template>
@@ -152,12 +123,5 @@
   .navigation-button .text {
     padding-left: 16px;
     line-height: 40px;
-  }
-
-  #search-button {
-	width: 56px;
-	height: 56px;
-	font-size: 1.25rem;
-	color: white;
   }
 </style>

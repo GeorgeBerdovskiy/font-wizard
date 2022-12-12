@@ -3,4 +3,6 @@
 </p>
 
 # Font Wizard
-Watch for updates!
+Download, reference, and manage fonts from sources such as Google Fonts and DaFont using this magical application!
+
+![image](resources/NewScreenshot.png)
