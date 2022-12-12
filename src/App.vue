@@ -1,10 +1,19 @@
 <script lang="ts">
+	import { invoke } from "@tauri-apps/api/tauri";
 	import Logo from './Images/LogoGreen.png'
 
 	export default {
 		data() {
 			return {
-				Logo: Logo
+				Logo: Logo,
+				boxes: ""
+			}
+		},
+
+		methods: {
+			async collectBoxes() {
+				this.boxes = await invoke("collect_boxes");
+				console.log(this.boxes)
 			}
 		}
 	}
@@ -58,6 +67,8 @@
 					</div>
 				</button>
 			</div>
+
+			<button @click="collectBoxes">Collect Boxes</button>
 
 		</div>
 		</div>
