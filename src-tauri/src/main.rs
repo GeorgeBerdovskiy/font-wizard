@@ -10,10 +10,8 @@ use postgres::{Client, NoTls};
 use sea_query::{ColumnDef, Iden, PostgresQueryBuilder, Table};
 
 #[derive(Iden)]
-enum Document {
-    Table,
-    Id,
-    Decimal,
+enum FontBox {
+    Table, Id, Decimal
 }
 
 fn initialize_postgres() -> Result<Client, postgres::Error> {
@@ -24,27 +22,25 @@ fn initialize_postgres() -> Result<Client, postgres::Error> {
 			// Database schema
 			let sql = [
 				Table::drop()
-					.table(Document::Table)
+					.table(FontBox::Table)
 					.if_exists()
 					.build(PostgresQueryBuilder),
 				Table::create()
-					.table(Document::Table)
+					.table(FontBox::Table)
 					.if_not_exists()
 					.col(
-						ColumnDef::new(Document::Id)
+						ColumnDef::new(FontBox::Id)
 							.integer()
 							.not_null()
 							.auto_increment()
 							.primary_key(),
 					)
-					.col(ColumnDef::new(Document::Decimal).decimal())
+					.col(ColumnDef::new(FontBox::Decimal).decimal())
 					.build(PostgresQueryBuilder),
-			]
-			.join("; ");
+			].join("; ");
 
-			println!("{}", sql);
 			let result = valid_client.batch_execute(&sql);
-			println!("Create table document: {:?}\n", result);
+			println!("Create table 'font_box' - {:?}", result);
 
 			return Ok(valid_client);
 		},
