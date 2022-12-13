@@ -5,23 +5,59 @@
 
 use tauri::Manager;
 use window_vibrancy::{apply_vibrancy, NSVisualEffectMaterial};
+
 use postgres::{Client, NoTls};
+use sea_query::{ColumnDef, Iden, PostgresQueryBuilder, Table};
+
+#[derive(Iden)]
+enum Document {
+    Table,
+    Id,
+    Decimal,
+}
+
+fn initialize_postgres() -> Result<Client, postgres::Error> {
+	let client_attempt = Client::connect("host=localhost user=font_wizard password=password dbname=font_wizard_database", NoTls);
+
+	match client_attempt {
+        Ok(mut valid_client) => {
+			// Database schema
+			let sql = [
+				Table::drop()
+					.table(Document::Table)
+					.if_exists()
+					.build(PostgresQueryBuilder),
+				Table::create()
+					.table(Document::Table)
+					.if_not_exists()
+					.col(
+						ColumnDef::new(Document::Id)
+							.integer()
+							.not_null()
+							.auto_increment()
+							.primary_key(),
+					)
+					.col(ColumnDef::new(Document::Decimal).decimal())
+					.build(PostgresQueryBuilder),
+			]
+			.join("; ");
+
+			println!("{}", sql);
+			let result = valid_client.batch_execute(&sql);
+			println!("Create table document: {:?}\n", result);
+
+			return Ok(valid_client);
+		},
+
+        Err(error) => {
+			return Err(error);
+		}
+    };
+}
 
 #[tauri::command]
 fn collect_boxes() -> Vec<String> {
-	// TODO - Make this mutable when you begin writing queries
-	let client = Client::connect("host=localhost user=font_wizard password=password dbname=font_wizard_database", NoTls);
-
-	match client {
-        Ok(..) => {
-			println!("Successfully connected to PostgreSQL.");
-		},
-        Err(error) => {
-			println!("ERROR. Failed to connect to PostgreSQL - {:?}", error)
-		}
-    };
-
-	// TODO - Replace with actual database queries
+	// TODO - Replace with database queries
 	let mut boxes = Vec::<String>::new();
 	boxes.push("Modern Fonts".to_string());
 	boxes.push("Classic Fonts".to_string());
@@ -30,6 +66,22 @@ fn collect_boxes() -> Vec<String> {
 }
 
 fn main() {
+	// Set up PostgreSQL
+	let client: Client;
+	let result = initialize_postgres();
+
+	match result {
+		Ok(valid_client) => {
+			client = valid_client;
+			println!("SUCCESS - Connected to PostgreSQL!")
+		}, 
+		
+		Err(error) => {
+			println!("ERROR - Failed to connect to PostgreSQL.");
+			panic!("{:?}", error);
+		}
+	}
+
     tauri::Builder::default()
 		.setup(|app| {
        		let window = app.get_window("main").unwrap();

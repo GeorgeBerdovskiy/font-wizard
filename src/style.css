@@ -120,6 +120,7 @@ a {
 :root {
 	/* COLORS */
 	--bright-lime: 243, 254, 57;
+	--evergreen: 27, 87, 93;
 
 	--space: 32px;
 }

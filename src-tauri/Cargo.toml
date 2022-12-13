@@ -23,6 +23,7 @@ tauri = {version = "1.2", features = ["macos-private-api", "shell-open"] }
 
 postgres = "^0.19"
 sea-query = "^0"
+sea-query-postgres = "^0"
 
 [features]
 # by default Tauri runs in production mode

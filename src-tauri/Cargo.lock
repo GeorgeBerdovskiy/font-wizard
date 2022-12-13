@@ -599,6 +599,7 @@ version = "0.0.0"
 dependencies = [
  "postgres",
  "sea-query",
+ "sea-query-postgres",
  "serde",
  "serde_json",
  "tauri",
@@ -2107,6 +2108,17 @@ dependencies = [
  "quote",
  "syn",
  "thiserror",
+]
+
+[[package]]
+name = "sea-query-postgres"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cb27ffe1c4a89d2e850179d697762a208ee6c1f8ce6c3c0cddf9e90f13d9576d"
+dependencies = [
+ "bytes",
+ "postgres-types",
+ "sea-query",
 ]
 
 [[package]]
