@@ -11,11 +11,15 @@
 				<p>Classic Fonts</p>
 			</div>
 		</div>
+
+		<button @click="createDataFolder">Create new directory.</button>
 	</div>
 </template>
 
 <script lang="ts">
 	import { invoke } from "@tauri-apps/api/tauri";
+	import { BaseDirectory, createDir, writeTextFile, readTextFile, exists } from "@tauri-apps/api/fs";
+	import { appDataDir } from '@tauri-apps/api/path';
 
 	export default {
 		data() {
@@ -25,9 +29,34 @@
 		},
 
 		methods: {
+			async createDataFolder() {
+				const appDataDirPath = await appDataDir();
+				let directoryExists = await exists(appDataDirPath + "data/font-boxes.json");
+				
+				if (directoryExists) {
+					console.log("DEBUG - Data directory with font boxes JSON file already exists.")
+					return;
+				}
+
+				try {
+					await createDir("data", {
+						dir: BaseDirectory.App,
+						recursive: true,
+					});
+
+					await writeTextFile({ path: "data/font-boxes.json", contents: '[ { "name": "Classic Fonts" }, { "name": "Modern Fonts" } ]' }, { dir: BaseDirectory.App });
+				} catch (error) {
+					console.error(error);
+				}
+			},
+
 			async collectBoxes() {
-				this.boxes = await invoke("collect_boxes");
-				console.log(this.boxes);
+				try {
+					const data = await readTextFile("data/font-boxes.json", { dir: BaseDirectory.App });
+					this.boxes = JSON.parse(data);
+				} catch (error) {
+					console.error(error);
+				}
 			}
 		},
 
